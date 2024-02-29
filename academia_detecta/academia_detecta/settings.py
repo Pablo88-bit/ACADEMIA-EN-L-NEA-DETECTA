@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+import os
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -31,12 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Administration',
+    'Users',
 ]
 
 MIDDLEWARE = [
@@ -51,10 +54,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'academia_detecta.urls'
 
+#AUTH_USER_MODEL= 'Users.USR_User'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,9 +80,16 @@ WSGI_APPLICATION = 'academia_detecta.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'academia_detecta',
+        'HOST': 'localhost',
+        'USER': 'Admin_DETECTA',
+        'PASSWORD': 'pablo200108',
+        'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=django',
+        },
+    },
 }
 
 
@@ -103,13 +115,31 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+#LANGUAGE_CODE = 'en-us'
+#Configuración de Django especifica el código de idioma predeterminado 
+#que se utilizará en tu aplicación, representa el español de Nicaragua.
+LANGUAGE_CODE = 'es-ni'
 
-TIME_ZONE = 'UTC'
 
-USE_I18N = True
+#TIME_ZONE = 'UTC'
+#Esta línea establece la zona horaria de tu proyecto Django en Managua, que es la capital de Nicaragua.
+TIME_ZONE = 'America/Managua'
 
+
+#Este parámetro se refiere a la internacionalización en Django y habilita
+#la traducción de los textos de tu aplicación a diferentes idiomas.
+USE_I18N = True 
+
+#Este parámetro indica si tu aplicación utilizará la hora UTC
+#(Tiempo Universal Coordinado) como referencia para almacenar la hora en la base de datos
 USE_TZ = True
+
+
+#Aquí has configurado la carpeta locale en el directorio base de tu proyecto 
+#como la ubicación para buscar los archivos de traducción.
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
 
 
 # Static files (CSS, JavaScript, Images)
@@ -121,3 +151,93 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
+
+#Settings Jazzmin
+"""JAZZMIN_SETTINGS = {
+    #"show_ui_builder": True, #El constructor de interfaz de usuario de Jazzmin
+
+    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    "site_title": "DETECTA",
+    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_header": 'DETECTA',
+    # Logo to use for your site, must be present in static files, used for brand on top left
+    #"site_logo": "/img/DETECTA.png",
+     # Copyright on the footer
+    "copyright": "Academia DETECTA",
+    #"Academia.jazzmin_settings"# 'True',
+    # List of model admins to search from the search bar, search bar omitted if excluded
+    # If you want to use a single search field you dont need to use a list, you can use a simple string
+    #"search_model": ["auth.User", "auth.Group", "Academia.Alumnos"],
+
+    # Logo to use for login form in dark themes (defaults to login_logo)
+    #"login_logo_dark": None,
+    "order_with_respect_to": ["Academia", "auth", "Users.USR_User"],
+
+    #"language_chooser": True,
+
+    # Welcome text on the login screen
+    "welcome_sign": "Bienvenido a la Academia DETECTA",
+
+    'icons': {
+    'Administration.AD_TypeIdentification': 'fas fa-id-card',
+    'Administration.AD_Nationality': 'fas fa-globe-americas',
+    'Administration.AD_City': 'fas fa-city',
+    'Administration.AD_Sex': 'fas fa-venus-mars',
+    'Administration.AD_EducationLevel': 'fas fa-graduation-cap',
+    'Administration.AD_TelephoneCompany': 'fas fa-phone-alt',
+    'Administration.AD_Profile': 'fas fa-user-circle',
+    'Users.USR_User': 'fas fa-user',
+    'auth.group': 'fas fa-users',
+    'auth.permission': 'fas fa-key',
+    'contenttypes.contenttype': 'fas fa-cube',
+    'sessions.Session': 'fas fa-clock',
+    },
+
+    
+
+
+    # Additional links to include in the user menu on the top right ("app" url type is not allowed)
+    "usermenu_links": [
+        #{"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True, "icons" :"auth.user': 'fas fa-user"},
+        {"model": "auth.user"}
+    ],
+
+    #"changeform_format": "horizontal_tabs",
+    # override change forms on a per modeladmin basis
+    #"changeform_format_overrides": {
+    #    "auth.user": "horizontal_tabs", 
+    #    "auth.group": "horizontal_tabs", 
+    #    "Academia.Alumnos": "carousel",
+    #    "Academia.Proveedor": "carousel",
+    #    "Academia.Profesor": "carousel"},
+
+
+    #"related_modal_active": False #Activar ventanas emergentes
+}
+
+
+
+#LOG
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',  # Puedes configurarlo para registrar errores y advertencias
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'errors.log'),  # Ruta y nombre de archivo
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': 'ERROR',
+    },
+}"""
+

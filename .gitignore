@@ -1,13 +1,28 @@
 # Ignorar archivos generados por Python
 *.pyc
 _pycache_/
-**/_pycache_/
-DETECTA/Academia/_pycache_/
-DETECTA/Academia/migrations/_pycache_/
-DETECTA/DETECTA/_pycache_/
+**/__pycache__/
+academia_detecta/__pycache__/
+academia_detecta/migrations/__pycache__/
+Proyecto DETECTA/academia_detecta/_pycache_/
 
-
-
-# Ignorar archivos con información sensible(password and API)
+# Ignorar archivos con información sensible (password and API)
 config.json
 secrets.txt
+
+
+#La función de .gitignore es decirle a Git qué archivos y directorios debe
+#ignorar cuando se realiza una operación de seguimiento de archivos. Esto 
+#significa que los archivos y directorios listados en el archivo .gitignore 
+#no serán incluidos en el control de versiones de Git y, por lo tanto, no 
+#se subirán al repositorio remoto cuando se realice un git push.
+
+#La sintaxis de un archivo .gitignore es bastante simple:
+
+#Puedes especificar archivos individuales, como config.json, secrets.txt, etc.
+#Puedes usar comodines, como *.pyc, para especificar todos los archivos con una extensión particular.
+#También puedes especificar directorios enteros, como _pycache_/, para ignorar todos los archivos en ese directorio y sus subdirectorios.
+
+#El patrón **/ se utiliza para hacer coincidir cualquier cantidad de subdirectorios. 
+#Por ejemplo, **/_pycache_/ ignorará cualquier directorio llamado _pycache_ 
+#independientemente de su ubicación en la estructura de carpetas del proyecto.
